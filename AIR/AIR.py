@@ -63,7 +63,7 @@ if __name__ == '__main__':
 	now = datetime.now()
 	now_time = now.strftime("%Y/%m/%d %H:%M:%S")
 	now_time_file = now.strftime("%Y%m%d %H-%M-%S")
-	model_text = '\n{} ------- AIR {}\nfactor_num={} batch_size={} lr={} lamda={} sample={}'.format(
+	model_text = '{} ------- AIR {}\nfactor_num={} batch_size={} lr={} lamda={} sample={}'.format(
 		now_time, model_index, args.factor_num, args.batch_size, args.lr, args.lamda, 'random_sample')
 	epochrec_path = f'./result/{data_set}/epoch_output.txt'
 	bestrec_path = f'./result/{data_set}/best_perf.txt'
@@ -134,7 +134,7 @@ if __name__ == '__main__':
 					}, f'result/{data_set}/{torchsave}.pt')
 			else:
 				conver_count +=1
-				if conver_count == 10:
+				if conver_count == 5:
 					break
 		
 		print(epoch_rec)

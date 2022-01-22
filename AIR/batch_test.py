@@ -13,12 +13,12 @@ import heapq
 import torch
 import tqdm
 
-cores = multiprocessing.cpu_count() // 2
+# cores = multiprocessing.cpu_count() // 2
 cores = 4
 Ks = args.Ks
 
-data_set = 'Beibei'
-# data_set = 'Taobao'
+# data_set = 'Beibei'
+data_set = 'Taobao'
 data_generator = Data(f'../Data/{data_set}', batch_size=args.batch_size)
 USER_NUM, ITEM_NUM = data_generator.n_users, data_generator.n_items
 N_TRAIN, N_TEST = data_generator.n_train, data_generator.n_test
