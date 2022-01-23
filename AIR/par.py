@@ -25,7 +25,7 @@ parser.add_argument("--Ks",
 	help="compute metrics@top_k")
 parser.add_argument("--factor_num", 
 	type=int,
-	default=256, 
+	default=64, 
 	help="predictive factors numbers in the model")
 parser.add_argument("--num_ng", 
 	type=int,

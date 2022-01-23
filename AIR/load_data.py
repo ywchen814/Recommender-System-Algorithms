@@ -116,35 +116,38 @@ class Data(object):
 
 
     def random_sample(self):
-        users, items, rels, pos_users, pos_items, neg_users, neg_items = [], [], [], [], [], [], []
+        users, items, pos_users, pos_items, neg_users, neg_items = [], [], [], [], [], []
+        rels, neg_rels = [], []
+
+        def sample_init_pair():
+            rel = rd.choice([0, 1, 2])
+            user_items, item_users = self.user_allact[rel], self.allact_user[rel]
+            user = rd.choice(self.exist_user[rel])
+            item = rd.choice(user_items[user])
+            return user, item, rel
+        
+        def sample_pos_pair_byuser(user, rel):
+            user_items, item_users = self.user_allact[rel], self.allact_user[rel] 
+            pos_item = rd.choice(user_items[user])
+            pos_user = rd.choice(item_users[pos_item])
+            return pos_user, pos_item
+            
+        def sample_neg_pair():
+            rel = rd.choice([0, 1, 2])
+            user_items, item_users = self.user_allact[rel], self.allact_user[rel]
+            neg_user = rd.choice(self.exist_user[rel])
+            neg_item = rd.choice(user_items[neg_user])
+            return neg_user, neg_item, rel
+
+    
         for i in range(self.batch_size):
-            user, item, rel = self.sample_init_pair()
+            user, item, rel = sample_init_pair()
             users.append(user); items.append(item); rels.append(rel)    
                     
-            pos_user, pos_item = self.sample_pos_pair_byuser(user, rel)
+            pos_user, pos_item = sample_pos_pair_byuser(user, rel)
             pos_users.append(pos_user); pos_items.append(pos_item); 
 
-            neg_user, neg_item = self.sample_neg_pair()
-            neg_users.append(neg_user); neg_items.append(neg_item); 
-            
-        return users, items, rels, pos_users, pos_items, neg_users, neg_items
-    
-    def sample_init_pair(self):
-        rel = rd.choice([0, 1, 2])
-        user_items, item_users = self.user_allact[rel], self.allact_user[rel]
-        user = rd.choice(self.exist_user[rel])
-        item = rd.choice(user_items[user])
-        return user, item, rel
-    
-    def sample_pos_pair_byuser(self, user, rel):
-        user_items, item_users = self.user_allact[rel], self.allact_user[rel] 
-        pos_item = rd.choice(user_items[user])
-        pos_user = rd.choice(item_users[pos_item])
-        return pos_user, pos_item
+            neg_user, neg_item, neg_rel = sample_neg_pair()
+            neg_users.append(neg_user); neg_items.append(neg_item); neg_rels.append(neg_rel)          
         
-    def sample_neg_pair(self):
-        rel = rd.choice([0, 1, 2])
-        user_items, item_users = self.user_allact[rel], self.allact_user[rel]
-        neg_user = rd.choice(self.exist_user[rel])
-        neg_item = rd.choice(user_items[neg_user])
-        return neg_user, neg_item
+        return users, items, pos_users, pos_items, neg_users, neg_items, rels, neg_rels
