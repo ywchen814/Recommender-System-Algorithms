@@ -27,7 +27,7 @@ parser.add_argument("--factor_num",
 	type=int,
 	default=64, 
 	help="predictive factors numbers in the model")
-parser.add_argument("--num_ng", 
+parser.add_argument("--neg_num", 
 	type=int,
 	default=4, 
 	help="sample negative items for training")
