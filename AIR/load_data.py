@@ -131,7 +131,7 @@ class Data(object):
             pos_item = rd.choice(user_items[user])
             pos_user = rd.choice(item_users[pos_item])
             return pos_user, pos_item
-            
+    
         def sample_neg_pair():
             rel = rd.choice([0, 1, 2])
             user_items, item_users = self.user_allact[rel], self.allact_user[rel]
@@ -149,5 +149,43 @@ class Data(object):
 
             neg_user, neg_item, neg_rel = sample_neg_pair()
             neg_users.append(neg_user); neg_items.append(neg_item); neg_rels.append(neg_rel)          
+    
+        return users, items, pos_users, pos_items, neg_users, neg_items, rels, neg_rels
+   
+    def rel_ratio_sample(self, p = np.repeat(1/3, 3), neg_sample_num = 1):
+        users, items, pos_users, pos_items, neg_users, neg_items = [], [], [], [], [], []
+        rels, neg_rels = [], []
+
+        def sample_init_pair():
+            rel = rd.choice([0, 1, 2], p)
+            user_items, item_users = self.user_allact[rel], self.allact_user[rel]
+            user = rd.choice(self.exist_user[rel])
+            item = rd.choice(user_items[user])
+            return user, item, rel
         
+        def sample_pos_pair_byuser(user, rel):
+            user_items, item_users = self.user_allact[rel], self.allact_user[rel] 
+            pos_item = rd.choice(user_items[user])
+            pos_user = rd.choice(item_users[pos_item])
+            return pos_user, pos_item
+            
+        def sample_neg_pair():
+            rel = rd.choice([0, 1, 2], p)
+            user_items, item_users = self.user_allact[rel], self.allact_user[rel]
+            neg_user = rd.choice(self.exist_user[rel])
+            neg_item = rd.choice(user_items[neg_user])
+            return neg_user, neg_item, rel
+
+    
+        for i in np.round(range(self.batch_size/neg_sample_num)):
+            user, item, rel = sample_init_pair() 
+            pos_user, pos_item = sample_pos_pair_byuser(user, rel)
+
+            for idx in range(neg_sample_num):
+                users.append(user); items.append(item); rels.append(rel)   
+                pos_users.append(pos_user); pos_items.append(pos_item); 
+
+                neg_user, neg_item, neg_rel = sample_neg_pair()
+                neg_users.append(neg_user); neg_items.append(neg_item); neg_rels.append(neg_rel)          
+       
         return users, items, pos_users, pos_items, neg_users, neg_items, rels, neg_rels

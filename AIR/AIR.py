@@ -70,7 +70,7 @@ if __name__ == '__main__':
 	best_result_text = ''
 
 	with open(epochrec_path,'a+') as f:
-		f.write(f'{model_text}\n')
+		f.write(f'\n{model_text}\n')
 
 
 	# create model
