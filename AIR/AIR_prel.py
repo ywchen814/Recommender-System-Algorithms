@@ -23,19 +23,19 @@ class AIR_prel(nn.Module):
 		nn.init.normal_(self.embed_item.weight, std=0.01)
 		nn.init.normal_(self.embed_rel.weight, std=0.01)
 
-	def forward(self, user, item, pos_user, pos_item, neg_user, neg_item, rel, neg_rel):
-		rel = self.embed_rel(user + rel * self.user_num) 
-		pos_rel = self.embed_rel(pos_user + rel * self.user_num)
-		neg_rel = self.embed_rel(neg_user + neg_rel * self.user_num)
+	def forward(self, user_idx, item_idx, pos_user_idx, pos_item_idx, neg_user_idx, neg_item_idx, rel_idx, neg_rel_idx):
+		rel = self.embed_rel(user_idx + rel_idx * self.user_num) 
+		pos_rel = self.embed_rel(pos_user_idx + rel_idx * self.user_num)
+		neg_rel = self.embed_rel(neg_user_idx + neg_rel_idx * self.user_num)
 		
-		user = self.embed_user(user)
-		item = self.embed_item(item)
+		user = self.embed_user(user_idx)
+		item = self.embed_item(item_idx)
 
-		pos_user = self.embed_user(pos_user)
-		pos_item = self.embed_item(pos_item)
+		pos_user = self.embed_user(pos_user_idx)
+		pos_item = self.embed_item(pos_item_idx)
 
-		neg_user = self.embed_user(neg_user)
-		neg_item = self.embed_item(neg_item)
+		neg_user = self.embed_user(neg_user_idx)
+		neg_item = self.embed_item(neg_item_idx)
 
 		g = self.g_func(user + rel, item)
 		g_pos = self.g_func(pos_user + pos_rel, pos_item)
@@ -71,9 +71,9 @@ if __name__ == '__main__':
 	now = datetime.now()
 	now_time = now.strftime("%Y/%m/%d %H:%M:%S")
 	now_time_file = now.strftime("%Y%m%d %H-%M-%S")
-	model_text = '{} ------- {}_{}\nfactor_num={} batch_size={} lr={} lamda={} sample={}'.format(
+	model_text = '{} ------- {}_{}\nfactor_num={} batch_size={} lr={} lamda={})'.format(
 		now_time, model_name, model_index, args.factor_num, 
-			args.batch_size, args.lr, args.lamda, 'random_sample')
+			args.batch_size, args.lr, args.lamda)
 	epochrec_path = f'./result/{data_set}/epoch_output.txt'
 	bestrec_path = f'./result/{data_set}/best_perf.txt'
 	best_result_text = ''
@@ -100,7 +100,7 @@ if __name__ == '__main__':
 		start_time = time.time()
 		epoch_loss, epoch_reg_loss = 0, 0
 		for batch_idx in range(batch_num):
-			user, item, pos_user, pos_item, neg_user, neg_item, rel, neg_rel = data_generator.random_sample()
+			user, item, pos_user, pos_item, neg_user, neg_item, rel, neg_rel = data_generator.random_sample(p = [4, 2 ,2], neg_num = args.neg_num)
 
 			user = torch.tensor(user).cuda()
 			item = torch.tensor(item).cuda()

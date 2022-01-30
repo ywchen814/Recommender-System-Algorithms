@@ -11,10 +11,13 @@ from load_data import *
 import multiprocessing
 import heapq
 import torch
-import tqdm
+import os
+# import tqdm
 
-# cores = multiprocessing.cpu_count() // 2
-cores = 4
+
+torch.backends.cudnn.benchmark = True
+cores = multiprocessing.cpu_count() // 2
+args = parse_args()
 Ks = args.Ks
 
 data_set = 'Beibei'
