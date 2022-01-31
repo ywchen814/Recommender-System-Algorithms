@@ -5,50 +5,57 @@ from datetime import datetime
 from batch_test import *
 import time
 
-class AIR(nn.Module):
+class AIR_prel(nn.Module):
 	def __init__(self, user_num, item_num, factor_num):
-		super(AIR, self).__init__()
+		super(AIR_prel, self).__init__()
 		"""
 		user_num: number of users;
 		item_num: number of items;
 		factor_num: number of predictive factors.
 		"""		
+		self.user_num = user_num
 		self.embed_user = nn.Embedding(user_num, factor_num)
 		self.embed_item = nn.Embedding(item_num, factor_num)
+		self.embed_rel = nn.Embedding(user_num*3, factor_num)
+		
 
 		nn.init.normal_(self.embed_user.weight, std=0.01)
 		nn.init.normal_(self.embed_item.weight, std=0.01)
+		nn.init.normal_(self.embed_rel.weight, std=0.01)
 
-	def forward(self, user, item, pos_user, pos_item, neg_user, neg_item):
-		user = self.embed_user(user)
-		item = self.embed_item(item)
+	def forward(self, user_idx, item_idx, pos_user_idx, pos_item_idx, neg_user_idx, neg_item_idx, rel_idx, neg_rel_idx):
+		rel = self.embed_rel(user_idx + rel_idx * self.user_num) 
+		pos_rel = self.embed_rel(pos_user_idx + rel_idx * self.user_num)
+		neg_rel = self.embed_rel(neg_user_idx + neg_rel_idx * self.user_num)
+		
+		user = self.embed_user(user_idx)
+		item = self.embed_item(item_idx)
 
-		pos_user = self.embed_user(pos_user)
-		pos_item = self.embed_item(pos_item)
+		pos_user = self.embed_user(pos_user_idx)
+		pos_item = self.embed_item(pos_item_idx)
 
-		neg_user = self.embed_user(neg_user)
-		neg_item = self.embed_item(neg_item)
+		neg_user = self.embed_user(neg_user_idx)
+		neg_item = self.embed_item(neg_item_idx)
 
-		g = self.g_func(user, item)
-		g_pos = self.g_func(pos_user, pos_item)
-		g_neg = self.g_func(neg_user, neg_item)
+		g = self.g_func(user + rel, item)
+		g_pos = self.g_func(pos_user + pos_rel, pos_item)
+		g_neg = self.g_func(neg_user + neg_rel, neg_item)
 		x_hat = torch.mul(g, g_pos-g_neg).sum(dim=1)
                 
 		loss = - sum(torch.log((torch.sigmoid(x_hat))))
 		reg_loss = (sum(user.norm(dim=1, p=2)) + sum(item.norm(dim=1, p=2)) +
             sum(pos_user.norm(dim=1, p=2)) + sum(pos_item.norm(dim=1, p=2)) + 
-            sum(neg_user.norm(dim=1, p=2)) + sum(neg_item.norm(dim=1, p=2)))
-		
+            sum(neg_user.norm(dim=1, p=2)) + sum(neg_item.norm(dim=1, p=2)) + 
+			sum(rel.norm(dim=1, p=2)) + sum(pos_rel.norm(dim=1, p=2))) + sum(neg_rel.norm(dim=1, p=2)))
 		return loss, reg_loss * args.lamda
 	
 	def g_func(self, a, b):
-		return(a + b)
+		return (a + b)
 
 if __name__ == '__main__':
 
 	users_to_test = list(data_generator.test_set.keys())
-	model_name = 'AIR'
-
+	model_name = 'AIR_urel'
 	#dir
 	if not os.path.exists('result'):
 		os.mkdir(f'result')
@@ -56,9 +63,9 @@ if __name__ == '__main__':
 		os.mkdir(f'result/{data_set}')
 
 	model_index = rd.randint(1,100)
-	while os.path.exists(f'result/{data_set}/AIR_{model_index}'):
+	while os.path.exists(f'result/{data_set}/{model_name}_{model_index}'):
 		model_index = rd.randint(1,100)
-	torchsave = f'AIR_{model_index}'
+	torchsave = f'{model_name}_{model_index}'
 
 	# output text
 	now = datetime.now()
@@ -76,7 +83,7 @@ if __name__ == '__main__':
 
 
 	# create model
-	model = AIR(USER_NUM, ITEM_NUM, args.factor_num)
+	model = AIR_prel(USER_NUM, ITEM_NUM, args.factor_num)
 	model.cuda()
 	optimizer = torch.optim.Adam(
 				model.parameters(), lr=args.lr)
@@ -93,7 +100,7 @@ if __name__ == '__main__':
 		start_time = time.time()
 		epoch_loss, epoch_reg_loss = 0, 0
 		for batch_idx in range(batch_num):
-			user, item, pos_user, pos_item, neg_user, neg_item, _, _ = data_generator.random_sample()
+			user, item, pos_user, pos_item, neg_user, neg_item, rel, neg_rel = data_generator.random_sample(p = [4, 2 ,2], neg_num = args.neg_num)
 
 			user = torch.tensor(user).cuda()
 			item = torch.tensor(item).cuda()
@@ -101,9 +108,12 @@ if __name__ == '__main__':
 			pos_item = torch.tensor(pos_item).cuda()
 			neg_user = torch.tensor(neg_user).cuda()
 			neg_item = torch.tensor(neg_item).cuda()
+			rel = torch.tensor(rel).cuda()
+			neg_rel = torch.tensor(neg_rel).cuda()
 
 			model.zero_grad()
-			loss, reg_loss = model(user, item, pos_user, pos_item, neg_user, neg_item)
+			loss, reg_loss = model(user, item, pos_user, pos_item, 
+				neg_user, neg_item, rel, neg_rel)
 			Loss = loss + reg_loss
 			Loss.backward()
 			optimizer.step()
@@ -120,7 +130,8 @@ if __name__ == '__main__':
 			with torch.no_grad():
 				U = model.embed_user.weight.detach().cpu().numpy()
 				I = model.embed_item.weight.detach().cpu().numpy()
-				ret = evaluate(users_to_test, U, I)
+				R = model.embed_rel.weight.detach().cpu().numpy()
+				ret = evaluate_urel(users_to_test, U, I, R)
 				recall = '\nRecall: {}\n'.format(np.round(ret['recall'],5))
 				ndcg = 'NDCG: {}'.format(np.round(ret['ndcg'],5))
 				epoch_rec += recall + ndcg

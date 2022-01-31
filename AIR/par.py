@@ -2,9 +2,13 @@ import argparse
 
 def parse_args():
 	parser = argparse.ArgumentParser()
+	parser.add_argument("--dataset", 
+		type=str, 
+		default='Beibei', 
+		help="dataset")
 	parser.add_argument("--lr", 
 		type=float, 
-		default=0.01, 
+		default=0.001, 
 		help="learning rate")
 	parser.add_argument("--lamda", 
 		type=float, 
@@ -30,6 +34,10 @@ def parse_args():
 		type=int,
 		default=4, 
 		help="sample negative items for training")
+	parser.add_argument("--beh_ratio", 
+		type = int,
+		default = [1, 1, 1], 
+		help="ratio of sampling relations for training")
 	parser.add_argument("--test_num_ng", 
 		type=int,
 		default=99, 
