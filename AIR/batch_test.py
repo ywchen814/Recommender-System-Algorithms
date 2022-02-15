@@ -11,14 +11,17 @@ from load_data import *
 import multiprocessing
 import heapq
 import torch
-import tqdm
+import os
+# import tqdm
 
-# cores = multiprocessing.cpu_count() // 2
-cores = 4
+
+torch.backends.cudnn.benchmark = True
+cores = multiprocessing.cpu_count() // 2
+args = parse_args()
+
 Ks = args.Ks
+data_set = args.dataset
 
-data_set = 'Beibei'
-# data_set = 'Taobao'
 data_generator = Data(f'../Data/{data_set}', batch_size=args.batch_size)
 USER_NUM, ITEM_NUM = data_generator.n_users, data_generator.n_items
 N_TRAIN, N_TEST = data_generator.n_train, data_generator.n_test
@@ -165,7 +168,7 @@ def evaluate(users_to_test, U, I):
     pool.close()
     return result
 
-def evaluate_prel(users_to_test, U, I, R):
+def evaluate_urel(users_to_test, U, I, R):
     # Remember
     result = {'precision': np.zeros(len(Ks)), 'recall': np.zeros(len(Ks)), 'ndcg': np.zeros(len(Ks)),
               'hit_ratio': np.zeros(len(Ks)), 'auc': 0.}
@@ -208,7 +211,7 @@ def evaluate_prel(users_to_test, U, I, R):
     pool.close()
     return result
 
-def evaluate_rel(users_to_test, U, I, R):
+def evaluate_rel(users_to_test, U, I, u_R, i_R):
     # Remember
     result = {'precision': np.zeros(len(Ks)), 'recall': np.zeros(len(Ks)), 'ndcg': np.zeros(len(Ks)),
               'hit_ratio': np.zeros(len(Ks)), 'auc': 0.}
@@ -217,6 +220,9 @@ def evaluate_rel(users_to_test, U, I, R):
 
     u_batch_size = args.batch_size
     i_batch_size = args.batch_size
+
+    u_R = u_R[0:USER_NUM,:]
+    i_R = i_R[0:ITEM_NUM,:]
 
     test_users = users_to_test
     n_test_users = len(test_users)
@@ -230,7 +236,7 @@ def evaluate_rel(users_to_test, U, I, R):
         
         user_batch = test_users[start: end]
 
-        rate_batch = np.matmul(U[user_batch] + R, np.transpose(I))
+        rate_batch = np.matmul(U[user_batch] + u_R[user_batch], np.transpose(I + i_R))
         user_batch_rating_uid = zip(rate_batch, user_batch)
         batch_result = []
         # for result in tqdm.tqdm(pool.imap_unordered(test_one_user, user_batch_rating_uid), total=u_batch_size):
