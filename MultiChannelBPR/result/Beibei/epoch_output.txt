@@ -1,0 +1,100 @@
+
+2022/02/16 19:46:32 ------- BPRMF_89
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 19:47:27 ------- BPRMF_82
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 19:47:47 ------- BPRMF_20
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 19:48:44 ------- BPRMF_66
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 19:48:56 ------- BPRMF_82
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 19:49:36 ------- BPRMF_43
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 19:51:40 ------- BPRMF_72
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 19:58:05 ------- BPRMF_76
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 21:48:27 ------- BPRMF_82
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 22:02:50 ------- BPRMF_35
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 22:04:09 ------- BPRMF_63
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 22:04:43 ------- BPRMF_8
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/16 22:16:40 ------- BPRMF_34
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:12:14 ------- BPRMF_19
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:14:24 ------- BPRMF_90
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:30:07 ------- BPRMF_77
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:31:12 ------- BPRMF_61
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:31:59 ------- BPRMF_85
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:33:12 ------- BPRMF_14
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:35:13 ------- BPRMF_55
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:58:05 ------- BPRMF_4
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 10:58:15 ------- BPRMF_35
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 11:00:21 ------- BPRMF_81
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 11:01:12 ------- BPRMF_12
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 11:04:52 ------- BPRMF_51
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 11:09:12 ------- BPRMF_33
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 11:16:55 ------- BPRMF_43
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+
+2022/02/17 11:19:21 ------- BPRMF_6
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+Epoch 1 [506s] loss: 143.3126 + 0.0550
+
+2022/02/17 11:34:15 ------- BPRMF_71
+factor_num=64 batch_size=256 lr=0.001 lamda=0.0001 beh_ratio =[1, 0, 5] neg_num=4)
+Epoch 1 [584s] loss: 142.3177 + 0.0543
+Recall: [0.00594 0.02012 0.02579 0.05222 0.11987 0.15542 0.19336]
+NDCG: [0.00594 0.01343 0.01524 0.02165 0.03535 0.04119 0.04702]
+Epoch 2 [483s] loss: 107.6700 + 0.0960
+Recall: [0.00999 0.021   0.03366 0.05963 0.10858 0.15505 0.18843]
+NDCG: [0.00999 0.01594 0.01981 0.02618 0.03596 0.04366 0.04876]
+Epoch 3 [480s] loss: 93.1529 + 0.1061
+Recall: [0.00999 0.01874 0.03712 0.06032 0.10771 0.1463  0.17554]
+NDCG: [0.00999 0.0145  0.02033 0.02607 0.03548 0.04189 0.04636]
+Epoch 4 [484s] loss: 100.0788 + 0.1168
+Recall: [0.00815 0.02556 0.03546 0.0711  0.11526 0.15081 0.1877 ]
+NDCG: [0.00815 0.0167  0.01993 0.02861 0.03721 0.04311 0.04879]
