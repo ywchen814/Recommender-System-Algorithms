@@ -19,7 +19,8 @@ torch.backends.cudnn.benchmark = True
 cores = multiprocessing.cpu_count() // 2
 args = parse_args()
 
-Ks = args.Ks
+Ks = eval(args.Ks)
+beh_ratio = eval(args.beh_ratio)
 data_set = args.dataset
 
 data_generator = Data(f'../Data/{data_set}', batch_size=args.batch_size)

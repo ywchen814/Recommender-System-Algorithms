@@ -16,15 +16,15 @@ def parse_args():
 		help="model regularization rate")
 	parser.add_argument("--batch_size", 
 		type=int, 
-		default=1024, 
+		default=256, 
 		help="batch size for training")
 	parser.add_argument("--epochs", 
 		type=int,
 		default=1000,  
 		help="training epoches")
 	parser.add_argument("--Ks", 
-		type=int, 
-		default = [1,5,10,20,50,80,100],
+		nargs='?', 
+		default = '[1,5,10,20,50,80,100]',
 		help="compute metrics@top_k")
 	parser.add_argument("--factor_num", 
 		type=int,
@@ -35,7 +35,7 @@ def parse_args():
 		default=4, 
 		help="sample negative items for training")
 	parser.add_argument("--beh_ratio", 
-		type = int,
+		nargs = '?',
 		default = [1, 1, 1], 
 		help="ratio of sampling relations for training")
 	parser.add_argument("--test_num_ng", 

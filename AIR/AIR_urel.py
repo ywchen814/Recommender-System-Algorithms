@@ -124,7 +124,7 @@ if __name__ == '__main__':
 		elapsed_time = time.time() - start_time
 		epoch_rec = "Epoch {:d} [{:.0f}s] loss: {:.4f} + {:.4f}".format(epoch, elapsed_time, loss, reg_loss)
 
-		if epoch % 10 == 0:
+		if epoch % 1 == 0:
 			print('Evaluate....')
 			model.eval()
 			with torch.no_grad():
@@ -148,7 +148,7 @@ if __name__ == '__main__':
 					}, f'result/{data_set}/{torchsave}.pt')
 			else:
 				conver_count +=1
-				if conver_count == 10:
+				if conver_count == 20:
 					break
 		
 		print(epoch_rec)
