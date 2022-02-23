@@ -25,7 +25,6 @@ def parse_args():
         metavar="INT")
     parser.add_argument(
         '-beta',
-        nargs=1,
         help="share of unobserved within negative feedback",
         type=float,
         default=1,
@@ -46,9 +45,9 @@ def parse_args():
     parser.add_argument(
         '-rel_order',
         nargs=4,
-        help="the order of importance of interactions (buy(0), pv(1), cart(2), unobserved(3))",
+        help="the order of importance of interactions (buy(0), pv(1), cart(2))",
         type=int,
-        default = [0, 2, 1, 3],
+        default = [0, 2, 1],
         metavar="INT")
     parser.add_argument(
         '-rel_weight',
@@ -68,7 +67,8 @@ def parse_args():
         type=int,
         default=42,
         metavar="INT")
-    parser.add_argument("--batch_size", 
+    parser.add_argument(
+        "-batch_size", 
 		type=int, 
 		default=256, 
 		help="batch size for training")
@@ -79,12 +79,13 @@ def parse_args():
         default=1000,
         metavar="INT")
     parser.add_argument(
-        '-sampling_mode',
-        help="negative item sampling modes",
+        '-sample_mode',
+        help="negative item sampling modes (uniform or multi_level)",
         type=str,
         default='uniform',
         metavar="STR")
-    parser.add_argument("--Ks", 
+    parser.add_argument(
+        "-Ks", 
 		nargs='?', 
 		default = '[1,5,10,20,50,80,100]',
 		help="compute metrics@top_k")
@@ -95,10 +96,10 @@ def parse_args():
         type=str,
         default='../data/',
         metavar="STR")
-    parser.add_argument("--dataset", 
+    parser.add_argument("-dataset", 
 		type=str, 
 		default='Beibei', 
-		help="dataset",
+		help="dataset (Beibei or Taobao)",
         metavar="STR")
     parser.add_argument(
         '-results',

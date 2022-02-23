@@ -5,7 +5,7 @@ def parse_args():
 	parser.add_argument("--dataset", 
 		type=str, 
 		default='Beibei', 
-		help="dataset")
+		help="dataset (Beibei or Taobao)")
 	parser.add_argument("--lr", 
 		type=float, 
 		default=0.001, 

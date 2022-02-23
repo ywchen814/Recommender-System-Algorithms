@@ -33,7 +33,7 @@ class MultiChannelBPR(nn.Module):
 
 if __name__ == '__main__':
     users_to_test = list(data_generator.test_set.keys())
-    model_name = 'BPRMF'
+    model_name = 'MultiChannelBPR'
 
     #dir
     if not os.path.exists('result'):
@@ -50,9 +50,9 @@ if __name__ == '__main__':
     now = datetime.now()
     now_time = now.strftime("%Y/%m/%d %H:%M:%S")
     now_time_file = now.strftime("%Y%m%d %H-%M-%S")
-    model_text = '{} ------- {}_{}\nfactor_num={} batch_size={} lr={} lamda={} beh_ratio ={} neg_num={})'.format(
+    model_text = '{} ------- {}_{}\nfactor_num={} batch_size={} lr={} lamda={} rel_weight={} beta={} neg_num={})'.format(
         now_time, model_name, model_index, args.factor_num, 
-            args.batch_size, args.lr, args.lamda, args.rel_weight, args.neg_num)
+            args.batch_size, args.lr, args.lamda, args.rel_weight, args.beta, args.neg_num)
     epochrec_path = f'./result/{data_set}/epoch_output.txt'
     bestrec_path = f'./result/{data_set}/best_perf.txt'
     best_result_text = ''
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         start_time = time.time()
         epoch_loss, epoch_reg_loss = 0, 0
         for batch_idx in range(batch_num):
-            user, pos_item, neg_item = data_generator.random_sample()
+            user, pos_item, neg_item = data_generator.random_sample(args.neg_num)
 
             user = torch.tensor(user).cuda()
             pos_item = torch.tensor(pos_item).cuda()
@@ -117,7 +117,7 @@ if __name__ == '__main__':
                     }, f'result/{data_set}/{torchsave}.pt')
             else:
                 conver_count +=1
-                if conver_count == 10:
+                if conver_count == 30:
                     break
         
         print(epoch_rec)
