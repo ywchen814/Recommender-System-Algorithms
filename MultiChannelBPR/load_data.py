@@ -33,6 +33,7 @@ class Data(object):
         self.user_buyitems, self.buyitem_users = {}, {}
         self.user_pvitems, self.pvitem_users = {}, {}
         self.user_cartitems, self.cartitem_users = {}, {}
+        self.user_allitems = {}
         self.test_set = {}
         
         self.exist_buyuser, self.exist_pvuser, self.exist_cartuser = [], [], []
@@ -44,6 +45,7 @@ class Data(object):
                     uid = int(l[0])
                     items = [int(i) for i in l[1:]]
                     self.user_buyitems[uid] = items
+                    self.user_allitems[uid] = items
                     self.exist_buyuser.append(uid)
                     for item in items:
                         if item in self.buyitem_users:
@@ -63,11 +65,15 @@ class Data(object):
                 items = [int(i) for i in l[1:]]
                 self.user_pvitems[uid] = items
                 self.exist_pvuser.append(uid)
+                if uid in self.user_allitems:
+                    self.user_allitems[uid] = self.user_allitems[uid] + items
+                else:
+                    self.user_allitems[uid] = items  
                 for item in items:
                     if item in self.pvitem_users:
                         self.pvitem_users[item].append(uid)
                     else:
-                        self.pvitem_users[item] = [uid]                          
+                        self.pvitem_users[item] = [uid]                           
                 self.n_items = max(self.n_items, max(items))
                 self.n_users = max(self.n_users, uid)
                 self.n_pv += len(items)
@@ -81,6 +87,10 @@ class Data(object):
                 items = [int(i) for i in l[1:]]
                 self.user_cartitems[uid] = items
                 self.exist_cartuser.append(uid)
+                if uid in self.user_allitems:
+                    self.user_allitems[uid] = self.user_allitems[uid] + items
+                else:
+                    self.user_allitems[uid] = items 
                 for item in items:
                     if item in self.cartitem_users:
                         self.cartitem_users[item].append(uid)
@@ -130,11 +140,19 @@ class Data(object):
         pos_item = rd.choice(user_items[user])
         return user, pos_item, rel
 
-    def sample_unobserved_item(self, user, mode='uniform'):
+    def sample_unobserved_item(self, user, mode = args.sample_mode):
+        obs_item = self.user_allitems[user]
         if mode == 'uniform':
-            obs_item = np.concatenate((self.user_allact[0][user],
-            self.user_allact[1][user],self.user_allact[2][user]))
             neg_item = rd.choice(np.setdiff1d(np.arange(self.n_items), obs_item))
+        elif mode == "multi_level":
+            other_u, neg_item, _ = self.sample_init_pair()
+            sample_time = 0
+            while other_u == user or neg_item in obs_item:
+                sample_time+=1
+                other_u, neg_item, _ = self.sample_init_pair()
+                if sample_time ==10:
+                    neg_item = rd.choice(np.setdiff1d(np.arange(self.n_items), obs_item))
+                    break
         return neg_item
 
     def sample_neg_item_from_rel(self, user, rel):
@@ -145,9 +163,13 @@ class Data(object):
         if sum(negrel_idx)==0: 
             neg_item = self.sample_unobserved_item(user)
         else:
-            neg_rel = rd.choice([0, 1, 2][negrel_idx], p = self.level_ratio[negrel_idx])
+            neg_rel = rd.choice(np.array([0, 1, 2])[negrel_idx],
+             p = self.level_ratio[negrel_idx]/sum(self.level_ratio[negrel_idx]))
             user_items = self.user_allact[neg_rel]
-            neg_item = rd.choice(user_items[user])
+            if user in user_items:
+                neg_item = rd.choice(user_items[user])
+            else:
+                neg_item = self.sample_unobserved_item(user)
         return neg_item
 
     def random_sample(self, neg_num = 1):
