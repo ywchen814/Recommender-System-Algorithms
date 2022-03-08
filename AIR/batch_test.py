@@ -95,7 +95,7 @@ def test_one_user(x):
     u = x[1]
     #user u's items in the training set
     try:
-        training_items = data_generator.train_items[u]
+        training_items = data_generator.user_buyitems[u]
     except Exception:
         training_items = []
     #user u's items in the test set
