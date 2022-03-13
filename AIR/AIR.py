@@ -63,7 +63,6 @@ if __name__ == '__main__':
 	# output text
 	now = datetime.now()
 	now_time = now.strftime("%Y/%m/%d %H:%M:%S")
-	now_time_file = now.strftime("%Y%m%d %H-%M-%S")
 	model_text = '{} ------- {}_{}\nfactor_num={} batch_size={} lr={} lamda={} beh_ratio ={} neg_num={})'.format(
 		now_time, model_name, model_index, args.factor_num, 
 			args.batch_size, args.lr, args.lamda, args.beh_ratio, args.neg_num)

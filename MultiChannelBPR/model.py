@@ -50,9 +50,9 @@ if __name__ == '__main__':
     now = datetime.now()
     now_time = now.strftime("%Y/%m/%d %H:%M:%S")
     now_time_file = now.strftime("%Y%m%d %H-%M-%S")
-    model_text = '{} ------- {}_{}\nfactor_num={} batch_size={} lr={} lamda={} rel_weight={} beta={} neg_num={})'.format(
+    model_text = '{} ------- {}_{}\nfactor_num={} batch_size={} lr={} lamda={} rel_weight={} beta={} neg_num={} sample_mode={})'.format(
         now_time, model_name, model_index, args.factor_num, 
-            args.batch_size, args.lr, args.lamda, args.rel_weight, args.beta, args.neg_num)
+            args.batch_size, args.lr, args.lamda, args.rel_weight, args.beta, args.neg_num, args.sample_mode)
     epochrec_path = f'./result/{data_set}/epoch_output.txt'
     bestrec_path = f'./result/{data_set}/best_perf.txt'
     best_result_text = ''
@@ -102,10 +102,10 @@ if __name__ == '__main__':
                 I = model.embed_item.weight.detach().cpu().numpy()
                 ret = evaluate(users_to_test, U, I)
                 recall = '\nRecall: {}\n'.format(np.round(ret['recall'],5))
-                ndcg = 'NDCG: {}'.format(np.round(ret['ndcg'],5))
+                ndcg = 'NDCG: {}\n'.format(np.round(ret['ndcg'],5))
                 epoch_rec += recall + ndcg
 
-            if ret['recall'][2] > best_result:
+            if ret['recall'][1] > best_result:
                 print('Save the best....')
                 best_result = ret['recall'][2]
                 best_result_text = epoch_rec
@@ -117,7 +117,7 @@ if __name__ == '__main__':
                     }, f'result/{data_set}/{torchsave}.pt')
             else:
                 conver_count +=1
-                if conver_count == 30:
+                if conver_count == 50:
                     break
         
         print(epoch_rec)

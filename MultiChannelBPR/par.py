@@ -34,7 +34,7 @@ def parse_args():
         dest="lr",
         help="learning rate",
         type=float,
-        default=0.001,
+        default=0.0001,
         metavar="FLOAT")
     parser.add_argument(
         '-lamda',
@@ -44,21 +44,21 @@ def parse_args():
         metavar="FLOAT")
     parser.add_argument(
         '-rel_order',
-        nargs=4,
+        nargs=3,
         help="the order of importance of interactions (buy(0), pv(1), cart(2))",
         type=int,
         default = [0, 2, 1],
         metavar="INT")
     parser.add_argument(
         '-rel_weight',
-        nargs= 3,
+        nargs=3,
         help="the sample weight of buy, pv, cart",
         type=float,
-        default = [1, 0, 5],
+        default = [1, 1, 1],
         metavar="float")
     parser.add_argument("--neg_num", 
 		type=int,
-		default=4, 
+		default=5, 
 		help="sample negative items for training")
     parser.add_argument(
         '-seed',
@@ -76,7 +76,7 @@ def parse_args():
         '-epoch',
         help="no. of training epochs",
         type=int,
-        default=1000,
+        default=100,
         metavar="INT")
     parser.add_argument(
         '-sample_mode',
@@ -86,8 +86,9 @@ def parse_args():
         metavar="STR")
     parser.add_argument(
         "-Ks", 
-		nargs='?', 
-		default = '[1,5,10,20,50,80,100]',
+		nargs='?',
+        type = int, 
+		default = [10, 50, 100],
 		help="compute metrics@top_k")
     parser.add_argument(
         '-data_path',
@@ -99,7 +100,7 @@ def parse_args():
     parser.add_argument("-dataset", 
 		type=str, 
 		default='Beibei', 
-		help="dataset (Beibei or Taobao)",
+		help="dataset (Beibei, Taobao or rocket)",
         metavar="STR")
     parser.add_argument(
         '-results',
