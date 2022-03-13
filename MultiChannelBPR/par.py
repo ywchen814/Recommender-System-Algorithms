@@ -56,7 +56,7 @@ def parse_args():
         type=float,
         default = [1, 1, 1],
         metavar="float")
-    parser.add_argument("--neg_num", 
+    parser.add_argument("-neg_num", 
 		type=int,
 		default=5, 
 		help="sample negative items for training")
