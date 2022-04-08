@@ -70,7 +70,6 @@ if __name__ == '__main__':
 
     #some initial var
     best_result = 0
-    conver_count = 0
     for epoch in range(1, args.epoch+1):
         model.train()
         start_time = time.time()
@@ -115,10 +114,6 @@ if __name__ == '__main__':
                     'optimizer_state_dict': optimizer.state_dict(),
                     'loss': loss,
                     }, f'result/{data_set}/{torchsave}.pt')
-            else:
-                conver_count +=1
-                if conver_count == 50:
-                    break
         
         print(epoch_rec)
         

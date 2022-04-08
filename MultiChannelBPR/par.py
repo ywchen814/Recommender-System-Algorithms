@@ -21,7 +21,7 @@ def parse_args():
         dest="factor_num",
         help="latent feature dimension",
         type=int,
-        default =64,
+        default = 128,
         metavar="INT")
     parser.add_argument(
         '-beta',
@@ -34,7 +34,7 @@ def parse_args():
         dest="lr",
         help="learning rate",
         type=float,
-        default=0.0001,
+        default=0.001,
         metavar="FLOAT")
     parser.add_argument(
         '-lamda',

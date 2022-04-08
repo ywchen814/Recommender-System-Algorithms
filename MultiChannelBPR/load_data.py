@@ -122,8 +122,11 @@ class Data(object):
         self.exist_user = [self.exist_buyuser, self.exist_pvuser, self.exist_cartuser]
         self.user_allact = [self.user_buyitems, self.user_pvitems, self.user_cartitems]
         self.allact_user = [self.buyitem_users, self.pvitem_users, self.cartitem_users]
-        self.level_ratio = np.array(args.rel_weight) * np.array([self.n_train, self.n_pv, self.n_cart])
-        self.level_ratio = self.level_ratio / sum(self.level_ratio)
+        
+        # self.level_ratio = np.array(args.rel_weight) * np.array([self.n_train, self.n_pv, self.n_cart])
+        # self.level_ratio = self.level_ratio / sum(self.level_ratio)
+        
+        self.level_ratio = [1/3, 1/3, 1/3]
 
     def print_statistics(self):
         print('n_users=%d, n_items=%d' % (self.n_users, self.n_items))
