@@ -1,0 +1,2 @@
+python3 run.py -d 64 -lr 0.0025 -reg 0.01 0.01 0.01 -epochs 50 -optimizer adam -data ../Data/rocket_beh/train_tb.csv -test_data ../Data/rocket_beh/test_tb.csv -eval_results ./eval_results/rocket_beh/
+python3 run.py -d 128 -lr 0.0025 -reg 0.0001 0.0001 0.0001 -epochs 50 -optimizer adam -data ../Data/rocket_beh/train_tb.csv -test_data ../Data/rocket_beh/test_tb.csv -eval_results ./eval_results/rocket_beh/
